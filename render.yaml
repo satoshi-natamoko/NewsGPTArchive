@@ -1,0 +1,33 @@
+services:
+  # Web Service (Node.js + Express + React)
+  - type: web
+    name: news-archive
+    runtime: node
+    region: oregon # 가장 가까운 리전 선택 가능
+    plan: free # 무료 플랜
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: news-archive-db
+          property: connectionString
+      - key: NAVER_CLIENT_ID
+        sync: false # Render 대시보드에서 수동 입력
+      - key: NAVER_CLIENT_SECRET
+        sync: false # Render 대시보드에서 수동 입력
+      - key: OPENAI_API_KEY
+        sync: false # Render 대시보드에서 수동 입력
+      - key: SESSION_SECRET
+        generateValue: true # 자동 생성
+    autoDeploy: true # GitHub push 시 자동 배포
+
+# PostgreSQL Database
+databases:
+  - name: news-archive-db
+    plan: free
+    databaseName: news_archive
+    user: news_archive_user
