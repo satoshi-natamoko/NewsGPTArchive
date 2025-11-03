@@ -5,7 +5,7 @@ services:
     runtime: node
     region: oregon # 가장 가까운 리전 선택 가능
     plan: free # 무료 플랜
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: npm run start
     healthCheckPath: /api/health
     envVars:
